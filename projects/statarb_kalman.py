@@ -75,9 +75,9 @@ def kalman_regression(x: NDArray[np.float64], y: NDArray[np.float64], p: KalmanP
 
         # update
         H = np.array([1.0, x[t]], dtype=float).reshape(1, 2)  # (1x2)
-        y_pred = float(H @ m_pred)
-        S = float(H @ P_pred @ H.T + R)
-        K = (P_pred @ H.T).reshape(2) / S  # (2,)
+        y_pred = (H @ m_pred)[0]
+        S = (H @ P_pred @ H.T)[0, 0] + R
+        K = (P_pred @ H.T)[:, 0] / S  # (2,)
         innov = y[t] - y_pred
 
         m = m_pred + K * innov
